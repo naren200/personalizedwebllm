@@ -1,0 +1,145 @@
+# Training Configuration for Qwen Fine-tuning
+model:
+  name: "Qwen/Qwen-0.5B-Chat"
+  max_length: 2048
+  trust_remote_code: true
+  use_fast_tokenizer: true
+
+training:
+  # Core training parameters
+  output_dir: "./models/finetuned"
+  num_train_epochs: 15
+  per_device_train_batch_size: 4
+  per_device_eval_batch_size: 4
+  gradient_accumulation_steps: 8
+  gradient_checkpointing: true
+  
+  # Learning rate and optimization
+  learning_rate: 2.0e-4
+  weight_decay: 0.01
+  warmup_ratio: 0.1
+  lr_scheduler_type: "cosine"
+  
+  # Training dynamics
+  max_steps: -1  # Use epochs instead
+  dataloader_drop_last: false
+  dataloader_num_workers: 4
+  
+  # Evaluation and saving
+  evaluation_strategy: "steps"
+  eval_steps: 100
+  save_strategy: "steps"
+  save_steps: 200
+  save_total_limit: 3
+  load_best_model_at_end: true
+  metric_for_best_model: "eval_loss"
+  greater_is_better: false
+  
+  # Logging
+  logging_dir: "./logs"
+  logging_steps: 50
+  logging_strategy: "steps"
+  report_to: ["tensorboard"]
+  
+  # Mixed precision and optimization
+  fp16: true
+  bf16: false
+  dataloader_pin_memory: true
+  
+  # Reproducibility
+  seed: 42
+  data_seed: 42
+  
+  # Early stopping
+  early_stopping_patience: 3
+  early_stopping_threshold: 0.001
+
+# LoRA Configuration
+lora:
+  r: 16
+  alpha: 32
+  dropout: 0.1
+  bias: "none"
+  task_type: "CAUSAL_LM"
+  target_modules:
+    - "q_proj"
+    - "k_proj"
+    - "v_proj"
+    - "o_proj"
+    - "gate_proj"
+    - "up_proj"
+    - "down_proj"
+
+# Data Configuration
+data:
+  dataset_path: "./data/processed/train.json"
+  validation_dataset_path: "./data/processed/validation.json"
+  max_seq_length: 2048
+  validation_split: 0.1
+  preprocessing_num_workers: 4
+  
+  # Data filtering
+  min_length: 10
+  max_length: 2048
+  
+  # Conversation template
+  conversation_template: "qwen"
+
+# Quantization for memory efficiency
+quantization:
+  load_in_4bit: true
+  bnb_4bit_quant_type: "nf4"
+  bnb_4bit_compute_dtype: "bfloat16"
+  bnb_4bit_use_double_quant: true
+
+# Hardware optimization
+hardware:
+  device_map: "auto"
+  max_memory: null  # Auto-detect
+  torch_dtype: "bfloat16"
+  
+# Monitoring and debugging
+monitoring:
+  wandb_project: "elevator-pitch-qwen"
+  wandb_run_name: null  # Auto-generate
+  log_model_checkpoints: true
+  
+# Advanced training options
+advanced:
+  # Gradient clipping
+  max_grad_norm: 1.0
+  
+  # Dropout
+  attention_dropout: 0.1
+  hidden_dropout: 0.1
+  
+  # Label smoothing
+  label_smoothing_factor: 0.0
+  
+  # DDP settings
+  ddp_find_unused_parameters: false
+  ddp_bucket_cap_mb: 25
+  
+  # Optimizer settings
+  optim: "adamw_torch"
+  adam_beta1: 0.9
+  adam_beta2: 0.999
+  adam_epsilon: 1.0e-8
+
+# Post-training settings
+post_training:
+  # Model merging (for LoRA)
+  merge_and_save: true
+  merged_model_path: "./models/finetuned/merged"
+  
+  # Evaluation metrics
+  compute_metrics: true
+  eval_accumulation_steps: 1
+  
+  # Generation settings for evaluation
+  generation:
+    max_new_tokens: 256
+    temperature: 0.7
+    top_p: 0.9
+    do_sample: true
+    pad_token_id: null  # Use tokenizer default

@@ -1,0 +1,33 @@
+# Core dependencies for fine-tuning and model conversion
+torch>=2.0.0
+transformers>=4.35.0
+datasets>=2.14.0
+accelerate>=0.24.0
+peft>=0.6.0
+bitsandbytes>=0.41.0
+
+# MLC-LLM for WebLLM conversion (install via pip with --find-links)
+# mlc-llm>=0.1.0  # Install separately: pip install mlc-llm -f https://mlc.ai/wheels
+# tvm>=0.15.0     # Installed with mlc-llm
+
+# Data processing and utilities
+numpy>=1.24.0
+pandas>=2.0.0
+scikit-learn>=1.3.0
+tqdm>=4.65.0
+pyyaml>=6.0
+jsonlines>=3.1.0
+
+# HuggingFace Hub for model deployment
+huggingface-hub>=0.17.0
+git-lfs>=1.6.0
+
+# Web development (optional, for examples)
+fastapi>=0.104.0
+uvicorn>=0.24.0
+jinja2>=3.1.2
+
+# Development and testing
+pytest>=7.4.0
+black>=23.0.0
+flake8>=6.0.0

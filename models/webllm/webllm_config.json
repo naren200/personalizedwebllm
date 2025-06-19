@@ -1,0 +1,17 @@
+{
+  "model_list": [
+    {
+      "model": "https://huggingface.co/your-username/finetuned-q4f16_1-MLC",
+      "model_id": "finetuned-q4f16_1-MLC",
+      "model_lib": "https://github.com/your-username/your-repo/releases/download/v1.0/finetuned-q4f16_1-MLC-webgpu.wasm",
+      "required_features": [
+        "shader-f16"
+      ],
+      "overrides": {
+        "context_window_size": 2048,
+        "prefill_chunk_size": 512,
+        "conv_template": "qwen2"
+      }
+    }
+  ]
+}

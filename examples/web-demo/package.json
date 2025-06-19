@@ -1,0 +1,17 @@
+{
+  "name": "web-demo",
+  "version": "1.0.0",
+  "description": "Web demo for personalized web LLM",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@mlc-ai/web-llm": "^0.2.33"
+  },
+  "devDependencies": {
+    "vite": "^4.4.0"
+  }
+}
